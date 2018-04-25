@@ -30,20 +30,20 @@
 
                     <table>
                         <tr>
-                            <td width="200"><button type="button" @click="a.risorse.cibo++">Raccogli cibo</button></td>
-                            <td width="60">{{ a.risorse.cibo | r }}</td>
+                            <td width="200"><button type="button" @click="a.risorse.cibo++" :disabled="this.a.risorse.cibo >= this.capacitaCibo">Raccogli cibo</button></td>
+                            <td width="120">{{ a.risorse.cibo | r }} / {{ capacitaCibo }}</td>
                             <td>{{ produzioneCibo | r }} cibo/sec</td>
                         </tr>
 
                         <tr>
-                            <td width="200"><button type="button" @click="a.risorse.legno++">Raccogli legno</button></td>
-                            <td width="60">{{ a.risorse.legno | r }}</td>
+                            <td width="200"><button type="button" @click="a.risorse.legno++" :disabled="this.a.risorse.legno >= this.capacitaLegno">Raccogli legno</button></td>
+                            <td width="120">{{ a.risorse.legno | r }} / {{ capacitaLegno }}</td>
                             <td>{{ produzioneLegno | r }} legno/sec</td>
                         </tr>
 
                         <tr>
-                            <td width="200"><button type="button" @click="a.risorse.pietra++">Raccogli pietra</button></td>
-                            <td width="60">{{ a.risorse.pietra | r }}</td>
+                            <td width="200"><button type="button" @click="a.risorse.pietra++" :disabled="this.a.risorse.pietra >= this.capacitaPietra">Raccogli pietra</button></td>
+                            <td width="120">{{ a.risorse.pietra | r }} / {{ capacitaPietra }}</td>
                             <td>{{ produzionePietra | r }} pietra/sec</td>
                         </tr>
                     </table>
@@ -53,7 +53,8 @@
 
             <table>
                 <tr>
-                    <td><button type="button" @click="creaCittadino()" :disabled="!autorizzaCittadino()">Crea Cittadino</button></td>
+                    <td><button type="button" @click="creaCittadino(1)" :disabled="!autorizzaCittadino(1)">Crea Cittadino</button></td>
+                    <td width="40"><button type="button" @click="creaCittadino(10)" :disabled="!autorizzaCittadino(10)">+10</button></td>
                     <td>{{ a.cittadini }}</td>
                     <td>Servono 10 unità di cibo</td>
                     <td>+ 1 cittadino</td>
@@ -65,6 +66,7 @@
                 </tr>
                 <tr>
                     <td><button type="button" @click="creaCasa()" :disabled="!autorizzaCasa()">Crea Casa</button></td>
+                    <td width="40"></td>
                     <td>{{ a.costruzioni.case }}</td>
                     <td>Servono 10 unità di legname</td>
                     <td>+10 popolazione</td>
@@ -76,9 +78,10 @@
                 </tr>
                 <tr>
                     <td><button type="button" @click="creaFattoria()" :disabled="!autorizzaFattoria()">Crea Fattoria</button></td>
+                    <td width="40"></td>
                     <td>{{ a.costruzioni.fattorie }}</td>
                     <td>Servono 10 unità di cibo e 10 di legname</td>
-                    <td>+ {{ fattori.costruzioni.falegnamerie }} taglialegna</td>
+                    <td>+ {{ fattori.costruzioni.falegnamerie }} contadini</td>
 
                     <td>{{ a.lavoratori.contadini }} / {{ maxContadini }} contadini</td>
                     <td>(+ {{ fattori.lavoratori.contadini }} cibo/sec)</td>
@@ -87,6 +90,7 @@
                 </tr>
                 <tr>
                     <td><button type="button" @click="creaFalegnameria()" :disabled="!autorizzaFalegnameria()">Crea Falegnameria</button></td>
+                    <td width="40"></td>
                     <td>{{ a.costruzioni.falegnamerie }}</td>
                     <td>Servono 10 unità di legname e 10 di pietra</td>
                     <td>+ {{ fattori.costruzioni.falegnamerie }} taglialegna</td>
@@ -98,6 +102,7 @@
                 </tr>
                 <tr>
                     <td><button type="button" @click="creaMiniera()" :disabled="!autorizzaMiniera()">Crea Miniera</button></td>
+                    <td width="40"></td>
                     <td>{{ a.costruzioni.miniere }}</td>
                     <td>Servono 20 unità di legname e 10 di pietra</td>
                     <td>+ {{ fattori.costruzioni.miniere }} minatori</td>
@@ -106,6 +111,42 @@
                     <td>(+ {{ fattori.lavoratori.minatori }} pietra/sec)</td>
                     <td width="40"><button :disabled="!canRemMinatore()" @click="remMinatore()">-</button></td>
                     <td width="40"><button :disabled="!canAddMinatore()" @click="addMinatore()">+</button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" @click="creaGranaio()" :disabled="!autorizzaGranaio()">Crea Granaio</button></td>
+                    <td width="40"></td>
+                    <td>{{ a.costruzioni.granai }}</td>
+                    <td>Servono 100 unità di legname e 100 di pietra</td>
+                    <td>+ {{ fattori.costruzioni.granai }} capacità cibo</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><button type="button" @click="creaRimessa()" :disabled="!autorizzaRimessa()">Crea Rimessa</button></td>
+                    <td width="40"></td>
+                    <td>{{ a.costruzioni.rimesse }}</td>
+                    <td>Servono 100 unità di legname e 100 di pietra</td>
+                    <td>+ {{ fattori.costruzioni.rimesse }} capacità legna</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><button type="button" @click="creaMagazzino()" :disabled="!autorizzaMagazzino()">Crea Magazzino</button></td>
+                    <td width="40"></td>
+                    <td>{{ a.costruzioni.magazzini }}</td>
+                    <td>Servono 100 unità di legname e 100 di pietra</td>
+                    <td>+ {{ fattori.costruzioni.magazzini }} capacità pietra</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
 
@@ -124,15 +165,17 @@
                 </div>
                 <div class="col">
 
+                    Fattori
+                    <pre>{{ fattori }}</pre>
+
+                </div>
+                <div class="col">
+
                     Logger
                     <pre>{{ logger.slice().reverse() }}</pre>
 
                 </div>
             </div>
-
-            <hr>
-
-            <button type="button" @click="reset()">Reset</button>
 
         </div> <!-- /container -->
 
@@ -163,19 +206,32 @@ export default {
                     fattorie: 0,
                     falegnamerie: 0,
                     miniere: 0,
+                    granai: 0,
+                    rimesse: 0,
+                    magazzini: 0
                 }
             },
             logger: [],
             fattori: {
+                base: {
+                    cittadini: 0,
+                    cibo: 100,
+                    legno: 100,
+                    pietra: 100,
+                },
                 lavoratori: {
-                    contadini: 0.1,
-                    taglialegna: 0.1,
-                    minatori: 0.1
+                    contadini: 1,
+                    taglialegna: 1,
+                    minatori: 1
                 },
                 costruzioni: {
+                    case: 10,
                     fattorie: 10,
                     falegnamerie: 10,
                     miniere: 10,
+                    granai: 100,
+                    rimesse: 100,
+                    magazzini: 100
                 }
             }
         }
@@ -183,7 +239,7 @@ export default {
 
     computed:{
         popolazione(){
-            return (this.a.costruzioni.case * 10) + 10;
+            return (this.a.costruzioni.case * this.fattori.costruzioni.case) + this.fattori.base.cittadini;
         },
         produzioneCibo(){
             return this.a.lavoratori.contadini * this.fattori.lavoratori.contadini;
@@ -194,9 +250,21 @@ export default {
         produzionePietra(){
             return this.a.lavoratori.minatori * this.fattori.lavoratori.minatori;
         },
+
+        capacitaCibo(){
+            return (this.a.costruzioni.granai * this.fattori.costruzioni.granai) + this.fattori.base.cibo;
+        },
+        capacitaLegno(){
+            return (this.a.costruzioni.rimesse * this.fattori.costruzioni.rimesse) + this.fattori.base.legno;
+        },
+        capacitaPietra(){
+            return (this.a.costruzioni.magazzini * this.fattori.costruzioni.magazzini) + this.fattori.base.pietra;
+        },
+
         freeCittadini(){
             return this.a.cittadini - this.a.lavoratori.contadini - this.a.lavoratori.taglialegna - this.a.lavoratori.minatori;
         },
+
         maxContadini(){
             return this.a.costruzioni.fattorie * this.fattori.costruzioni.fattorie;
         },
@@ -209,16 +277,14 @@ export default {
     },
 
     methods: {
-        autorizzaCittadino(){
-            return this.a.risorse.cibo >= 10 && this.popolazione > this.a.cittadini;
+        autorizzaCittadino(n){
+            return this.a.risorse.cibo >= (10 * n) && this.popolazione > this.a.cittadini && this.popolazione >= (this.a.cittadini + n);
         },
-        creaCittadino(){
-            if( this.autorizzaCittadino() ){
-                this.a.cittadini++;
-                this.a.risorse.cibo = this.a.risorse.cibo - 10;
-                this.nuovoLogger('Creato cittadino');
-            }else{
-                this.nuovoLogger('Non hai abbastanza cibo');
+        creaCittadino(n){
+            if( this.autorizzaCittadino(n) ){
+                this.a.cittadini = this.a.cittadini + n;
+                this.a.risorse.cibo = this.a.risorse.cibo - (10 * n);
+                this.nuovoLogger('Creati '+n+' cittadini');
             }
         },
 
@@ -281,8 +347,6 @@ export default {
                 this.a.costruzioni.case++;
                 this.a.risorse.legno = this.a.risorse.legno - 10;
                 this.nuovoLogger('Creata casa');
-            }else{
-                this.nuovoLogger('Non hai abbastanza legno');
             }
         },
         autorizzaFattoria(){
@@ -292,10 +356,8 @@ export default {
             if( this.autorizzaFattoria() ){
                 this.a.costruzioni.fattorie++;
                 this.a.risorse.cibo = this.a.risorse.cibo - 10;
-                this.a.risorse.legno = this.a.risorse.legno - 20;
+                this.a.risorse.legno = this.a.risorse.legno - 10;
                 this.nuovoLogger('Creata fattoria');
-            }else{
-                this.nuovoLogger('Non hai abbastanza cibo o legno');
             }
         },
         autorizzaFalegnameria(){
@@ -307,8 +369,6 @@ export default {
                 this.a.risorse.legno = this.a.risorse.legno - 10;
                 this.a.risorse.pietra = this.a.risorse.pietra - 10;
                 this.nuovoLogger('Creata falegnameria');
-            }else{
-                this.nuovoLogger('Non hai abbastanza legno o pietra');
             }
         },
         autorizzaMiniera(){
@@ -320,15 +380,47 @@ export default {
                 this.a.risorse.legno = this.a.risorse.legno - 20;
                 this.a.risorse.pietra = this.a.risorse.pietra - 10;
                 this.nuovoLogger('Creata miniera');
-            }else{
-                this.nuovoLogger('Non hai abbastanza legno o pietra');
             }
         },
+        autorizzaGranaio(){
+            return this.a.risorse.legno >= 100 && this.a.risorse.pietra >= 100;
+        },
+        creaGranaio(){
+            if( this.autorizzaGranaio() ){
+                this.a.costruzioni.granai++;
+                this.a.risorse.legno = this.a.risorse.legno - 100;
+                this.a.risorse.pietra = this.a.risorse.pietra - 100;
+                this.nuovoLogger('Creato granio');
+            }
+        },
+        autorizzaRimessa(){
+            return this.a.risorse.legno >= 100 && this.a.risorse.pietra >= 100;
+        },
+        creaRimessa(){
+            if( this.autorizzaRimessa() ){
+                this.a.costruzioni.rimesse++;
+                this.a.risorse.legno = this.a.risorse.legno - 100;
+                this.a.risorse.pietra = this.a.risorse.pietra - 100;
+                this.nuovoLogger('Creata rimessa');
+            }
+        },
+        autorizzaMagazzino(){
+            return this.a.risorse.legno >= 100 && this.a.risorse.pietra >= 100;
+        },
+        creaMagazzino(){
+            if( this.autorizzaMagazzino() ){
+                this.a.costruzioni.magazzini++;
+                this.a.risorse.legno = this.a.risorse.legno - 100;
+                this.a.risorse.pietra = this.a.risorse.pietra - 100;
+                this.nuovoLogger('Creato magazzino');
+            }
+        },
+
         salva(){
             localStorage.setItem('aegis', JSON.stringify(this.a));
             this.nuovoLogger('Autosave');
             var t = this;
-            setTimeout(function(){ t.salva() }, 10000);
+            setTimeout(function(){ t.salva() }, 30000);
         },
         reset(){
             if( confirm('Sei sicuro? Tutti i progressi andranno persi...') ){
@@ -350,9 +442,29 @@ export default {
         checkProduzione(){
             // this.nuovoLogger('Produzione avviata');
 
-            this.a.risorse.cibo = this.a.risorse.cibo + this.produzioneCibo;
-            this.a.risorse.legno = this.a.risorse.legno + this.produzioneLegno;
-            this.a.risorse.pietra = this.a.risorse.pietra + this.produzionePietra;
+            if( this.capacitaCibo > this.a.risorse.cibo ){
+                if( this.a.risorse.cibo + this.produzioneCibo > this.capacitaCibo){
+                    this.a.risorse.cibo = this.capacitaCibo;
+                }else{
+                    this.a.risorse.cibo = this.a.risorse.cibo + this.produzioneCibo;
+                }
+            }
+
+            if( this.capacitaLegno > this.a.risorse.legno ){
+                if( this.a.risorse.legno + this.produzioneLegno > this.capacitaLegno){
+                    this.a.risorse.legno = this.capacitaLegno;
+                }else{
+                    this.a.risorse.legno = this.a.risorse.legno + this.produzioneLegno;
+                }
+            }
+
+            if( this.capacitaPietra > this.a.risorse.pietra ){
+                if( this.a.risorse.pietra + this.produzionePietra > this.capacitaPietra){
+                    this.a.risorse.pietra = this.capacitaPietra;
+                }else{
+                    this.a.risorse.pietra = this.a.risorse.pietra + this.produzionePietra;
+                }
+            }
 
             var t = this;
             setTimeout(function(){ t.checkProduzione() }, 1000);
