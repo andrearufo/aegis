@@ -31,20 +31,20 @@
                     <table>
                         <tr>
                             <td width="200"><button type="button" @click="civilta.risorse.cibo++" :disabled="this.civilta.risorse.cibo >= this.capacitaCibo">Raccogli cibo</button></td>
-                            <td width="120">{{ civilta.risorse.cibo | r }} / {{ capacitaCibo }}</td>
-                            <td>{{ produzioneCibo | r }} cibo/sec</td>
+                            <td width="120">{{ r(civilta.risorse.cibo) }} / {{ capacitaCibo }}</td>
+                            <td>{{ r(produzioneCibo) }} cibo/sec - {{ r(alimentazione) }} cibo/sec</td>
                         </tr>
 
                         <tr>
                             <td width="200"><button type="button" @click="civilta.risorse.legno++" :disabled="this.civilta.risorse.legno >= this.capacitaLegno">Raccogli legno</button></td>
-                            <td width="120">{{ civilta.risorse.legno | r }} / {{ capacitaLegno }}</td>
-                            <td>{{ produzioneLegno | r }} legno/sec</td>
+                            <td width="120">{{ r(civilta.risorse.legno) }} / {{ capacitaLegno }}</td>
+                            <td>{{ r(produzioneLegno) }} legno/sec</td>
                         </tr>
 
                         <tr>
                             <td width="200"><button type="button" @click="civilta.risorse.pietra++" :disabled="this.civilta.risorse.pietra >= this.capacitaPietra">Raccogli pietra</button></td>
-                            <td width="120">{{ civilta.risorse.pietra | r }} / {{ capacitaPietra }}</td>
-                            <td>{{ produzionePietra | r }} pietra/sec</td>
+                            <td width="120">{{ r(civilta.risorse.pietra) }} / {{ capacitaPietra }}</td>
+                            <td>{{ r(produzionePietra) }} pietra/sec</td>
                         </tr>
                     </table>
 
@@ -160,7 +160,7 @@
                 <div class="col">
 
                     Risorse:
-                    <pre>{{ a }}</pre>
+                    <pre>{{ civilta }}</pre>
 
                 </div>
                 <div class="col">
@@ -241,8 +241,11 @@ export default {
         popolazione(){
             return (this.civilta.costruzioni.case * this.fattori.costruzioni.case) + this.fattori.base.cittadini;
         },
+        alimentazione(){
+            return this.civilta.cittadini * 0.2;
+        },
         produzioneCibo(){
-            return this.civilta.lavoratori.contadini * this.fattori.lavoratori.contadini;
+            return (this.civilta.lavoratori.contadini * this.fattori.lavoratori.contadini) - this.alimentazione;
         },
         produzioneLegno(){
             return this.civilta.lavoratori.taglialegna * this.fattori.lavoratori.taglialegna;
@@ -416,7 +419,6 @@ export default {
             }
         },
 
-        /*
         salva(){
             localStorage.setItem('aegis', JSON.stringify(this.civilta));
             this.nuovoLogger('Autosave');
@@ -433,14 +435,14 @@ export default {
             if (localStorage.length > 0) {
                 var aegis = JSON.parse(localStorage.getItem('aegis'));
 
-                if(typeof aegis !== null)
+                if(aegis != null){
                     this.civilta = aegis;
+                }
 
                 this.nuovoLogger('Loading');
             }
             this.salva();
         },
-        */
         checkProduzione(){
             // this.nuovoLogger('Produzione avviata');
 
@@ -474,17 +476,14 @@ export default {
         nuovoLogger (message) {
             var d = (new Date()).toISOString();
             this.logger.push(d+' - '+message);
-        }
-    },
-
-    filters: {
+        },
         r(num){
             return Math.round(num * 100) / 100;
         }
     },
 
     created(){
-        // this.checkSalvataggio();
+        this.checkSalvataggio();
         this.nuovoLogger('Start');
         this.checkProduzione();
     }
