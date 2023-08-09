@@ -2,17 +2,26 @@
 
 > A simple clicker game
 
-## Build Setup
+## Project Setup
 
-``` bash
-# install dependencies
+```sh
 npm install
+```
 
-# serve with hot reload at localhost:8080
+### Compile and Hot-Reload for Development
+
+```sh
 npm run dev
+```
 
-# build for production with minification
+### Compile and Minify for Production
+
+```sh
 npm run build
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```
