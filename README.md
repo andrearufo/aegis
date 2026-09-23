@@ -20,3 +20,7 @@ npm run build    # build di produzione in dist/
 - `src/components/` — UI.
 
 Stesso seed → stesso percorso, stessi eventi e stessi tiri di dado.
+
+## Licenza
+
+GPL-3.0, vedi [LICENSE](LICENSE).
