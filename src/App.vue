@@ -7,8 +7,10 @@ import InventoryPanel from './components/InventoryPanel.vue'
 import PathGrid from './components/PathGrid.vue'
 import SeedSetup from './components/SeedSetup.vue'
 import { useGameStore } from './stores/game'
+import { useWalker } from './components/useWalker'
 
 const game = useGameStore()
+const { moving } = useWalker()
 const setup = ref(true)
 
 function start(seed?: number) {
@@ -34,7 +36,7 @@ function start(seed?: number) {
       <EventPanel />
       <InventoryPanel />
     </div>
-    <EndScreen v-if="game.isVictory || game.isGameOver" @new-game="setup = true" />
+    <EndScreen v-if="(game.isVictory || game.isGameOver) && !moving" @new-game="setup = true" />
   </main>
 </template>
 
@@ -44,7 +46,9 @@ function start(seed?: number) {
   --fg: #222;
   --muted: #6b6b6b;
   --panel: #fff;
-  --path: #e5dcc5;
+  --road: #e6dcc3;
+  --road-edge: #cbbb92;
+  --dot: #d9d2c2;
   --accent: #7a4fd6;
   --danger: #c43d3d;
   --good: #2f8f4e;
@@ -57,7 +61,9 @@ function start(seed?: number) {
     --fg: #eee;
     --muted: #9a9a9a;
     --panel: #262522;
-    --path: #3d3829;
+    --road: #3f3829;
+    --road-edge: #5a4f37;
+    --dot: #34322d;
     --good: #5cc27f;
   }
 }
@@ -76,4 +82,7 @@ button.primary { background: var(--accent); color: #fff; border-color: var(--acc
 .setup form { display: grid; gap: 0.5rem; }
 .setup input { font: inherit; padding: 0.4rem; width: 100%; box-sizing: border-box; }
 .error { color: var(--danger); font-size: 0.85rem; }
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
 </style>

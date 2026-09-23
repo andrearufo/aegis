@@ -43,7 +43,10 @@ async function copySeed() {
 
 <style scoped>
 .end { border: none; color: var(--fg); max-width: 340px; text-align: center; }
-.end::backdrop { background: rgb(0 0 0 / 0.5); }
+.end[open] { animation: appear 0.35s cubic-bezier(0.3, 1.4, 0.5, 1); }
+.end::backdrop { background: rgb(0 0 0 / 0.5); animation: fade 0.35s; }
+@keyframes appear { from { opacity: 0; transform: scale(0.85) translateY(12px); } }
+@keyframes fade { from { opacity: 0; } }
 h2 { margin: 0; }
 p { margin: 0.25rem 0; }
 .seed { display: flex; gap: 0.5rem; align-items: center; justify-content: center; }
